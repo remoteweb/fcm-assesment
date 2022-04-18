@@ -82,3 +82,16 @@ class ParsedSegment
 
   end
 end
+
+<<-PARSERHELP
+RESERVATION
+SEGMENT: Hotel BCN 2020-01-05 -> 2020-01-10
+           0    1       2      3      4
+
+RESERVATION
+SEGMENT: Flight SVQ 2020-01-05 20:40 -> BCN 22:10
+SEGMENT: Flight BCN 2020-01-10 10:30 -> SVQ 11:50
+SEGMENT: Flight BCN 2020-01-10 10:30 -> SVQ 2020-01-11 01:05
+            0    1      2        3    4  5    6          7
+
+PARSERHELP

@@ -19,7 +19,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_14_200147) do
   end
 
   create_table "reservation_segments", force: :cascade do |t|
-    t.string "reservation_id"
     t.string "segment_type"
     t.integer "rank"
     t.string "origin"

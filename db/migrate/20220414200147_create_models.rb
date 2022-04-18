@@ -18,7 +18,6 @@ class CreateModels < ActiveRecord::Migration[7.0]
     end
 
     create_table :reservation_segments do |t|
-      t.string      :reservation_id
       t.string      :segment_type
       t.integer     :rank
       t.string      :origin

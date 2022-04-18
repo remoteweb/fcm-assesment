@@ -44,10 +44,20 @@ Model Diagram
 ![Model Diagram](https://github.com/remoteweb/fcm-assessment/blob/main/public/other/model_diagram.png?raw=true)
 
 
-## Running the test
+## Running the test locally
+
+Requires
+
+- Ruby 3.1.1
+- Rails 7.0.2.3
+- Postgres 14.2
+
 ```
 git clone git@github.com:remoteweb/fcm-assessment.git
 cd fcm-assessment
+bundle install
+rails db:create
+rails db:migrate
 rake import
 rake print
 ```
