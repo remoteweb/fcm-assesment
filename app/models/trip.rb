@@ -12,43 +12,53 @@ class Trip < ApplicationRecord
     }
   end
 
-  def self.append_to_existing_or_create_new_trip(segment, user)
+  def self.segment_append_or_create(segment, user)
+    # This method gets a single reservation segment 
+    # and associates to a new or already created Trip
+
     reservation_segment = user.reservation_segments.build
     reservation_segment.origin = segment.origin 
     
-    if segment.transportation? && 
-        segment.aller?
-      
+    if segment.transportation?
       reservation_segment.destination = segment.destination
-      reservation_segment.rank = 0
-      city = City.find_or_create_by(code: segment.destination)
-      
-      trip = user.trips.find_or_create_by(city_id: city.id, completed: false)
-      trip.update(start_at: segment.start_at)
 
-    elsif segment.transportation? && 
-      segment.retour?
-      
-      reservation_segment.destination = segment.destination
-      reservation_segment.rank = 1000000
-      city = City.find_or_create_by(code: segment.origin)
-      
-      trip = user.trips.find_or_create_by(city_id: city.id, completed: false)
-      trip.update(end_at: segment.end_at)
-      
+      if segment.aller?
+        reservation_segment.rank = 0
+        city = City.find_or_create_by(code: segment.destination)
+        trip = user.trips.find_or_initialize_by(city_id: city.id, 
+                                                completed: false)
+        trip.start_at = segment.start_at
+        
+      elsif segment.retour?
+        reservation_segment.rank = 1000000
+        city = City.find_or_create_by(code: segment.origin)
+        trip = user.trips.find_or_initialize_by(city_id: city.id, 
+                                                completed: false)
+        trip.end_at = segment.end_at
+        
+      end
+
     elsif segment.hotel?
       reservation_segment.rank = 500000
       city = City.find_or_create_by(code: segment.origin)
-
-      trips = user.trips.where(city_id: city.id).where('CAST(start_at AS DATE) >= ? AND CAST(end_at AS DATE) <= ?', segment.start_at, segment.end_at)
+      trips = user.trips.where('city_id = ? AND CAST(start_at AS DATE) >= ? AND CAST(end_at AS DATE) <= ?', 
+                                city.id, 
+                                segment.start_at, 
+                                segment.end_at)
       
-      if !trips.blank?
+      if !trips.blank? && trips.size > 1
+        log("1 trip expected, got more")
+
+      elsif !trips.blank? && trips.size == 1
         trip = trips.first
+
       else
-        trip = user.trips.create(city_id: city.id)
+        trip = user.trips.new(city_id: city.id)
+
       end
     end
 
+    trip.save
     reservation_segment.city_id = city.id
     reservation_segment.start_at = segment.start_at
     reservation_segment.end_at = segment.end_at

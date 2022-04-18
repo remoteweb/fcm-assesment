@@ -1,4 +1,4 @@
-class NormalizeRawTextInput
+class NormalizeText
   def initialize(input)
     @input = input
   end
