@@ -1,6 +1,5 @@
-As we want to provide the better experience for our users we want to represent their itinerary at most comprehensive way possible.
-
-We receive the reservations of our user that we know that is based on SVQ as:
+# Introduction
+The implementation parses raw input of the following format,
 
 ```
 RESERVATION
@@ -18,7 +17,7 @@ RESERVATION
 SEGMENT: Hotel MAD 2020-02-15 -> 2020-02-17
 ```
 
-But we want to expose and UI like this:
+and print them as
 
 ```
 TRIP to BCN
@@ -32,15 +31,23 @@ Hotel at MAD on 2020-02-15 to 2020-02-17
 Train from MAD to SVQ at 2020-02-17 17:00 to 19:30
 ```
 
-Using the framework/library of your choice you have to:
+```
+git clone git@github.com:remoteweb/fcm-assesment.git
+cd fcm-assessment
+rake import
+rake print
+```
 
-* Make a parser for the given input.
-* Implement the sort and grouping logic of the segments.
-* A printer for the UI like above.
+Model Diagram
 
-Take into account the following aspects:
 
-* You can attach notes explaining the solution and why certain things are included and others are left out.
-* The solution should be production ready.
-* You should provide a solution easy to extend.
+![Model Diagram](https://github.com/remoteweb/fcm-assessment/blob/main/public/other/model_diagram.png?raw=true)
 
+
+## Running the test
+```
+git clone git@github.com:remoteweb/fcm-assessment.git
+cd fcm-assessment
+rake import
+rake print
+```

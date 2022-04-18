@@ -54,7 +54,7 @@ class ParsedSegment
 
   def start_at
     if self.hotel?
-      DateTime.parse("#{split_string_to_array(@segment)[2]} - 12:00")
+      DateTime.parse("#{split_string_to_array(@segment)[2]}")
 
     elsif self.transportation?
       DateTime.parse("#{split_string_to_array(@segment)[2]},
@@ -64,7 +64,7 @@ class ParsedSegment
 
   def end_at
     if self.hotel?
-      DateTime.parse("#{split_string_to_array(@segment)[4]} - 12:00")
+      DateTime.parse("#{split_string_to_array(@segment)[4]}")
 
     elsif self.transportation?
       if split_string_to_array(@segment)[7].present?

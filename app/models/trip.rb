@@ -40,8 +40,8 @@ class Trip < ApplicationRecord
       reservation_segment.rank = 500000
       city = City.find_or_create_by(code: segment.origin)
 
-      trips = user.trips.where(city_id: city.id).where('start_at > ? AND end_at < ?', segment.start_at, segment.end_at)
-
+      trips = user.trips.where(city_id: city.id).where('CAST(start_at AS DATE) >= ? AND CAST(end_at AS DATE) <= ?', segment.start_at, segment.end_at)
+      
       if !trips.blank?
         trip = trips.first
       else
