@@ -10,6 +10,42 @@ class ParsedSegment
     @user = user
   end
 
+  def start_at
+    if self.hotel?
+      DateTime.parse("#{split_string_to_array(@segment)[2]}")
+
+    elsif self.transportation?
+      DateTime.parse("#{split_string_to_array(@segment)[2]},
+                      #{split_string_to_array(@segment)[3]}")
+    end
+  end
+
+
+  def end_at
+    if self.hotel?
+      DateTime.parse("#{split_string_to_array(@segment)[4]}")
+
+    elsif self.transportation?
+      if split_string_to_array(@segment)[7].present?
+        DateTime.parse("#{split_string_to_array(@segment)[6]} - #{split_string_to_array(@segment)[7]}")
+      else
+        DateTime.parse("#{self.start_at.to_date} - #{split_string_to_array(@segment)[6]}")
+      end
+    end
+  end
+
+  def origin
+    split_string_to_array(@segment)[1]
+  end
+  
+  def destination
+    if self.transportation?
+      split_string_to_array(@segment)[5]
+    elsif self.hotel?
+      false
+    end
+  end
+
   def hotel?
     @segment.include?('Hotel')
   end
@@ -26,23 +62,6 @@ class ParsedSegment
     @segment.include?('Flight')
 
   end
-  
-  def train?
-    @segment.include?('Train')
-  end
-
-  def destination
-    if self.transportation?
-      split_string_to_array(@segment)[5]
-    elsif self.hotel?
-      false
-    end
-  end
-
-  def origin
-    split_string_to_array(@segment)[1]
-  end
-
 
   def aller?
     self.transportation? && self.destination != @user.city.code
@@ -51,28 +70,9 @@ class ParsedSegment
   def retour?
     self.transportation? && self.destination == @user.city.code
   end
-
-  def start_at
-    if self.hotel?
-      DateTime.parse("#{split_string_to_array(@segment)[2]}")
-
-    elsif self.transportation?
-      DateTime.parse("#{split_string_to_array(@segment)[2]},
-                      #{split_string_to_array(@segment)[3]}")
-    end
-  end
-
-  def end_at
-    if self.hotel?
-      DateTime.parse("#{split_string_to_array(@segment)[4]}")
-
-    elsif self.transportation?
-      if split_string_to_array(@segment)[7].present?
-        DateTime.parse("#{split_string_to_array(@segment)[6]} - #{split_string_to_array(@segment)[7]}")
-      else
-        DateTime.parse("#{self.start_at.to_date} - #{split_string_to_array(@segment)[6]}")
-      end
-    end
+  
+  def train?
+    @segment.include?('Train')
   end
 
   private
