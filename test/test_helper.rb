@@ -10,4 +10,10 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  setup do
+    User.delete_all
+    City.delete_all
+    Trip.delete_all
+    ReservationSegment.delete_all
+  end
 end

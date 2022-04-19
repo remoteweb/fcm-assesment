@@ -2,10 +2,6 @@
 
 one:
   city: one
-  reservation: one
-  transportation: one
 
 two:
   city: two
-  reservation: two
-  transportation: two
